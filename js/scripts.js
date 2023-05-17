@@ -1,8 +1,14 @@
 class Validator {
 
     constructor(){
-        this.validations = [
+        this.validations = [            
             'data-min-length',
+            'data-max-length',
+            'data-only-letters',
+            'data-email-validate',
+            'data-required',            
+            'data-equal',
+            'data-password-validate'
         ]    
     }
 
@@ -10,20 +16,23 @@ class Validator {
 
     validate(form) {
 
-        //pegar os inputs
-        let inputs = form.getElementsByTagName('input')
+        //resgata todas as validacoes
+        let currentValidations = document.querySelectorAll('form .error-validation')
 
-        console.log(inputs)
+        if(currentValidations.length){
+            this.cleanValidations(currentValidations)
+        }
+
+        //pegar os inputs
+        let inputs = form.getElementsByTagName('input')        
 
         //transforma uma HTMLCollection -> Array
 
         let inputsArray = [...inputs]
 
-        console.log(inputsArray)
-
         //loop nos inputs e validação mediante aos que for encontrado
 
-        inputsArray.forEach(function(input) {
+        inputsArray.forEach(function(input, obj){
 
             //loop em todas as validações existentes
 
@@ -32,7 +41,7 @@ class Validator {
                 if(input.getAttribute(this.validations[i]) != null) {
 
                     //limpando a string para virar um método
-                    let method = this.validations[i].replace('data-','').replace('-','')
+                    let method = this.validations[i].replace("data-","").replace("-" , "")
 
                     //valor do input
                     let value = input.getAttribute(this.validations[i])
@@ -55,8 +64,101 @@ class Validator {
         }
     }
 
+    maxlength(input, maxValue) {
+        let inputLength = input.value.length
+
+        let errorMessage = `O campo precisa ter menos que ${maxValue} caracteres`
+
+        if(inputLength > maxValue) {
+            this.printMessage(input, errorMessage)
+        }
+    }
+
+    //metodo que confirma que ha apenas letras na string
+    onlyletters(input){
+        let re = /^[A-Za-z]+$/;;
+
+        let inputValue = input.value
+
+        let errorMessage = `Este campo nao aceita numeros, nem caracteres especiais`
+
+        if(!re.test(inputValue)){
+            this.printMessage(input, errorMessage)
+        }
+    }
+
+    //metodo para validar o email
+    emailvalidate(input){
+        let re = /\S+@\S+\.\S+/
+
+        let email = input.value
+
+        let errorMessage = `Insira um email no padrao email@email.com`
+
+        if(!re.test(email)){
+            this.printMessage(input, errorMessage)
+        }
+    }
+
+
+    //verificar se um campo esta igual ao outro
+    equal(input, inputName) {
+        let inputToCompare = document.getElementsByName(inputName)[0]
+
+        let errorMessage = `Este campo precisa ser igual ao ${inputName}`
+
+        if(input.value != inputToCompare.value) {
+            this.printMessage(input, errorMessage)
+        }
+    }
+
+
+    //metodo para exibir inputs que sao necessarios
+    required(input){
+
+        let inputValue = input.value
+
+        if(inputValue === '') {
+            let errorMessage = `Este campo e obrigatorio`
+
+            this.printMessage(input, errorMessage)
+        }
+    }
+
+    //validando password
+    passwordvalidate(input){
+
+        //explodir String em Array
+        let charArr = input.value.split("")
+
+        let uppercases = 0
+        let numbers = 0
+
+        for(let i = 0; charArr.length > i; i++){
+            if(charArr[i] === charArr[i].toUpperCase() && isNaN(parseInt(charArr[i]))){
+                uppercases++
+
+            }else if(!isNaN(parseInt(charArr[i]))){
+                numbers++
+            }
+        }
+
+        if(uppercases === 0 || numbers === 0) {
+            let errorMessage = `A senha precisa de um caractere maiusculo e um numero`
+
+            this.printMessage(input, errorMessage)
+        }
+    }
+
     //método para imprimir mensagens de erro na tela
     printMessage(input, msg) {
+
+        //checa os erros presentes no input
+        let errorsQty = input.parentNode.querySelector('.error-validation')
+
+
+        //imprimir erros so se nao houver erros
+        if(errorsQty === null){
         let template = document.querySelector('.error-validation').cloneNode(true)
 
         template.textContent = msg
@@ -66,6 +168,12 @@ class Validator {
         template.classList.remove('template')
 
         inputParent.appendChild(template)
+        }
+    }
+
+    //limpa as validacoes da tela
+    cleanValidations(validations){
+        validations.forEach(el => el.remove())
     }
 }
 

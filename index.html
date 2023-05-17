@@ -22,27 +22,27 @@
 
             <div class="full-box">
                 <label for="email">E-mail</label>
-                <input type="email" name="email" id="email" placeholder="Digite seu e-mail" data-min-length="3">
-            </div>
+                <input type="email" name="email" id="email" placeholder="Digite seu e-mail" data-min-length="2" data-email-validate>
+            </di>
 
             <div class="half-box spacing">
                 <label for="name">Nome</label>
-                <input type="name" name="name" id="name" placeholder="Digite seu nome">
+                <input type="name" name="name" id="name" placeholder="Digite seu nome" data-min-length="3" data-required data-max-length="16" data-only-letters>
             </div>
 
             <div class="half-box">
                 <label for="lastname">Sobrenome</label>
-                <input type="lastname" name="lastname" id="lastname" placeholder="Digite seu sobrenome">
+                <input type="lastname" name="lastname" id="lastname" placeholder="Digite seu sobrenome" data-required data-only-letters data-min-length="3" data-max-length="30">
             </div>
 
             <div class="half-box spacing">
                 <label for="password">Senha</label>
-                <input type="password" name="password" id="password" placeholder="Digite sua senha">
+                <input type="password" name="password" id="password" placeholder="Digite sua senha" data-password-validate="true" data-required>
             </div>
 
             <div class="half-box">
                 <label for="passconfirmation">Confirme sua senha</label>
-                <input type="passconfirmation" name="passconfirmation" id="passconfirmation" placeholder="Confirme sua senha">
+                <input type="password" name="passconfirmation" id="passconfirmation" placeholder="Confirme sua senha" data-equal="password">
             </div>
 
             <div class="full-box">
@@ -52,19 +52,21 @@
 
             <div class="full-box">
                 <input type="submit" id="btn-submit" value="Registrar">
-            </div>
-
-            <p class="error-validation template"></p>
+            </div>   
 
         </form>
 
     </div>
 
+    <p class="error-validation template"></p>
+
+    <!-- JS Src -->
+
+    <script src="js/scripts.js"></script>
 
     <!-- Optional JavaScript -->
     <!-- Popper.js first, then Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
-    <script src="js/scripts.js"></script>
   </body>
 </html>
